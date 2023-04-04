@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rich Text Editor</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f1f1f1;
+		}
+
+		.toolbar {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			box-shadow: 0px 0px 10px #ccc;
+			padding: 5px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		button {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			padding: 5px 10px;
+			border: none;
+            border-radius: 12px;
+			background-color: #eee;
+			cursor: pointer;
+			margin: 0 5px;
+		}
+
+		button:hover {
+			background-color: #ddd;
+		}
+
+		.editor {
+			width: 80%;
+			height: px;
+			margin: 10px auto;
+			background-color: #fff;
+			padding: 20px;  
+            border-style: solid;
+            border-image: linear-gradient(to right, darkblue, darkorchid) 1;
+			box-shadow: 0px 0px 10px #ccc;
+			font-size: 16px;
+			line-height: 1.5;
+			overflow-y: scroll;
+		}
+		
+		.editor:focus {
+			outline: none;
+			box-shadow: 0px 0px 10px #6fbced;
+		}
+	</style>
+</head>
+<body>
+	<div class="toolbar">
+		<button onclick="document.execCommand('bold', false, null)"><b>B</b></button>
+		<button onclick="document.execCommand('italic', false, null)"><i>I</i></button>
+		<button onclick="document.execCommand('underline', false, null)"><u>U</u></button>
+		<button onclick="document.execCommand('strikeThrough', false, null)"><s>S</s></button>
+		<button onclick="document.execCommand('subscript', false, null)">x<sub>2</sub></button>
+		<button onclick="document.execCommand('superscript', false, null)">x<sup>2</sup></button>
+		<button onclick="document.execCommand('insertOrderedList', false, null)">Numbered List</button>
+		<button onclick="document.execCommand('insertUnorderedList', false, null)">Bullet List</button>
+		<button onclick="document.execCommand('justifyLeft', false, null)">Align Left</button>
+		<button onclick="document.execCommand('justifyCenter', false, null)">Align Center</button>
+		<button onclick="document.execCommand('justifyRight', false, null)">Align Right</button>
+		<button onclick="document.execCommand('justifyFull', false, null)">Justify</button>
+		<button onclick="document.execCommand('undo', false, null)">Undo</button>
+		<button onclick="document.execCommand('redo', false, null)">Redo</button>
+		<button onclick="saveFile()">Save</button>
+		<button onclick="editFile()">Edit</button>
+		<button onclick="openFile()">Open</button>
+	</div>
+
+	<div class="editor" contenteditable="true">
+		<p>Type here...</p>
+	</div>
+
+	<script>
+		// get the editor
+		const editor = document
+	// save file
+	function saveFile() {
+		localStorage.setItem('editorContent', editor.innerHTML);
+		alert('File saved successfully!');
+	}
+
+	// edit file
+	function editFile() {
+		const content = localStorage.getItem('editorContent');
+		if (content) {
+			editor.innerHTML = content;
+			alert('File loaded successfully!');
+		} else {
+			alert('No saved file found!');
+		}
+	}
+
+	// open file
+	function openFile() {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = 'text/html';
+
+		input.onchange = function() {
+			const file = this.files[0];
+			const reader = new FileReader();
+			reader.onload = function() {
+				editor.innerHTML = this.result;
+				alert('File loaded successfully!');
+			};
+			reader.readAsText(file);
+		};
+
+		input.click();
+	}
+</script>
+</body>
+</html>
